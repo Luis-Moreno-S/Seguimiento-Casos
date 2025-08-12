@@ -1,0 +1,26 @@
+<table cellpadding="5" cellspacing="0" style="width:100%; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th>Asunto</th>
+            <th>Fecha y Hora</th>
+            <th>Participantes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (event of events; track $index) {
+        <tr>
+            <td>{{ event.subject }}</td>
+            <td>{{ event.startDateTime | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>
+                <ul>
+                    @for (attendee of event.attendees; track $index) {
+                    <li>
+                        {{ attendee.name }} <small>({{ attendee.email }})</small> - <i>{{ attendee.type }}</i>
+                    </li>
+                    }
+                </ul>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

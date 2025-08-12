@@ -1,0 +1,13 @@
+<button class="btn btn-warning" (click)="increment()">+</button>
+{{count}}
+<button class="btn btn-warning my-2" (click)="decrement()">-</button>
+<br>
+
+<button class="btn btn-danger" [ngClass]="{'disabled': disabled}" (click)="text='text-danger'">Danger</button>
+<button class="btn btn-success mx-2" [ngClass]="{'disabled': disabled}" (click)="text='text-success'">Success</button>
+<button class="btn btn-primary" [ngClass]="{'disabled': disabled}" (click)="text='text-primary'">Primary</button>
+
+<p class="{{text}}">Estado del boton</p>
+
+<button class="btn btn-secondary" (click)="disabled=!disabled">On | Off</button>
+<hr>
