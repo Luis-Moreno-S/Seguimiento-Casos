@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-botones',
   imports: [CommonModule],
-  templateUrl: './botones.html',
-  styleUrl: './botones.css'
+  styleUrl: './botones.css',
+  templateUrl: './botones.html'
 })
 export class BotonesComponent {
   count: number = 1;
