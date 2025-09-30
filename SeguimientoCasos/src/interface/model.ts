@@ -1,16 +1,21 @@
 export interface Persona {
-  nombre: string,
-  edad: number
+  nombre: string;
+  edad: number;
 }
 
-export interface EventItem {
-  subject: string;
-  startDateTime: string;
-  attendees: Attendee[];
+export interface CalendarModel {
+  Fecha: string;
+  Estado: string;
+  Subject: string;
+  Customer: string;
+  Duration: number;
+  EndDateTime: string;
+  StartDateTime: string;
+  Participants: Participant[];
 }
 
-interface Attendee {
-  name: string;
-  email: string;
-  type: string;
+export interface Participant {
+  Type: string;
+  Name: string;
+  Email: string;
 }

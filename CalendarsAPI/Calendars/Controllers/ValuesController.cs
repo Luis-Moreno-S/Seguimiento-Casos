@@ -1,7 +1,10 @@
-﻿using System.Linq;
-using System.Net.Http;
+﻿using System;
+using System.Linq;
 using System.Web.Http;
+using System.Net.Http;
+using Calendars.Models;
 using System.Text.Json;
+using Calendars.Helper;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -10,54 +13,91 @@ namespace Calendars.Controllers
     public class ValuesController : ApiController
     {
         #region Variables
-        private static readonly HttpClient httpClient = new HttpClient();
+        IAHelper iHelper = new IAHelper();
+        TeamsHelper tHelper = new TeamsHelper();
         #endregion
 
         #region Metodos
         [HttpGet]
-        [Route("api/Values/GetAccessToken")]
-        public async Task<IHttpActionResult> GetAccessToken()
+        [Route("api/Values/GetCalendars/{email}/{StartDate}/{EndDate}")]
+        public async Task<List<CalendarModel>> GetCalendars(string email, string StartDate, string EndDate)
         {
-            string token;            
-            var requestData = new Dictionary<string, string>
+            var eventsList = new List<CalendarModel>();
+            try
             {
-                { "grant_type", "client_credentials" },
-                { "scope", "https://graph.microsoft.com/.default" },
-                { "client_id", "d9844ae6-b42e-4db6-89f1-1ed28ccf3b70" },
-                { "client_secret", "Sgi8Q~xIyAyuPiqciGpXQIqv3cqmzOZJhXnOHdbU" }
-            };
-            using (var response = await httpClient.PostAsync("https://login.microsoftonline.com/a6f2e2b1-c143-4b66-90e8-9aadc862d90f/oauth2/v2.0/token", new FormUrlEncodedContent(requestData)))
-            {
-                var jsonResponse = await response.Content.ReadAsStringAsync();
-                token = JsonDocument.Parse(jsonResponse).RootElement.GetProperty("access_token").GetString();
-            }
-
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://graph.microsoft.com/v1.0/users/daniel.parra@issatec.com/calendar/events?$select=subject,start,attendees");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            request.Headers.Add("Prefer", "outlook.timezone=\"SA Pacific Standard Time\"");
-
-            using (var graphResponse = await httpClient.SendAsync(request))
-            {
-                var json = await graphResponse.Content.ReadAsStringAsync();
-                var events = JsonDocument.Parse(json).RootElement.GetProperty("value")
-                    .EnumerateArray()
-                    .Select(ev => new
+                var root = JsonDocument.Parse(await tHelper.GetMeetings(email, DateTime.Parse(StartDate), DateTime.Parse(EndDate).AddDays(1))).RootElement;
+                if (root.TryGetProperty("value", out var value))
+                {
+                    eventsList.AddRange(value.EnumerateArray().Select(ev =>
                     {
-                        subject = ev.GetProperty("subject").GetString(),
-                        startDateTime = ev.GetProperty("start").GetProperty("dateTime").GetString(),
-                        attendees = ev.GetProperty("attendees")
-                            .EnumerateArray()
-                            .Select(a => new
-                            {
-                                name = a.GetProperty("emailAddress").GetProperty("name").GetString(),
-                                email = a.GetProperty("emailAddress").GetProperty("address").GetString(),
-                                type = a.GetProperty("type").GetString()
-                            }).ToList()
-                    }).ToList();
-                return Ok(events);
+                        var participants = ev.GetProperty("attendees").EnumerateArray().Select(a => new Participant
+                        {
+                            Type = a.GetProperty("type").GetString(),
+                            Name = a.GetProperty("emailAddress").GetProperty("name").GetString(),
+                            Email = a.GetProperty("emailAddress").GetProperty("address").GetString()
+                        }).ToList();
+
+                        return new CalendarModel
+                        {
+                            Participants = participants,
+                            Customer = GetCustomer(participants),
+                            Subject = ev.GetProperty("subject").GetString(),
+                            Estado = ev.GetProperty("isCancelled").GetBoolean() ? "Cancelada" : "Realizada",
+                            StartDateTime = DateTime.Parse(ev.GetProperty("start").GetProperty("dateTime").GetString()),
+                            EndDateTime = DateTime.Parse(ev.GetProperty("end").GetProperty("dateTime").GetString())
+                        };
+                    }).Where(e => e.Duration > 0 && !e.Subject.ToLower().Contains("almuerzo")));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error obteniendo eventos: {ex.Message}");
+            }
+            return eventsList;
+        }
+
+        [HttpPost]
+        [Route("api/Values/GetAnalysisTable")]
+        public async Task<string> GetAnalysisTable(List<CalendarModel> meetings)
+        {
+            string data = JsonSerializer.Serialize(meetings, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+            return await iHelper.ProcessTable(data);
+        }
+
+        [HttpPost]
+        [Route("api/Values/GetAnalysisWidgets")]
+        public async Task<string> GetAnalysisWidgets(List<CalendarModel> meetings)
+        {
+            string data = JsonSerializer.Serialize(meetings, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+            return await iHelper.ProcessWidgets(data);
+        }
+        #endregion
+
+        #region Auxiliares
+        private string GetCustomer(List<Participant> participants)
+        {
+            var dominios = participants.Select(p => p.Email.Split('@').Last().ToLower())
+                                       .Where(d => d != "gmail.com" && d != "outlook.com")
+                                       .Select(d => d.StartsWith("issatec0") ? "issatec.com" : d)
+                                       .Distinct()
+                                       .ToList();
+            if (dominios.All(d => d == "issatec.com"))
+            {
+                return "Issatec";
+            }
+            else
+            {
+                var dominioCliente = dominios.First(d => d != "issatec.com");
+                return dominioCliente.Split('.').First().ToUpper();
             }
         }
+        #endregion
     }
-    #endregion
 }
 

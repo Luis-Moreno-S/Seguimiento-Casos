@@ -1,26 +1,121 @@
-<table cellpadding="5" cellspacing="0" style="width:100%; border-collapse: collapse;">
-    <thead>
+<!-- Formulario de filtros -->
+<div class="section-card">
+  <form [formGroup]="dataForm" (ngSubmit)="getData()" class="row g-3 align-items-end">
+    <div class="col-md-3">
+      <label for="userSelect" class="form-label">Usuario</label>
+      <select id="userSelect" formControlName="userEmail" class="form-select">
+        <option value="camila.martinez@issatec.com">Camila Martinez</option>
+        <option value="daniel.parra@issatec.com">Daniel Parra</option>
+        <option value="geoffrey.soto@issatec.com">Geoffrey Soto</option>
+        <option value="gustavo.causil@issatec.com">Gustavo Causil</option>
+        <option value="luis.moreno@issatec.com">Luis Moreno</option>
+        <option value="samuel.melo@issatec.com">Samuel Melo</option>
+        <option value="paola.vera@issatec.com">Paola Vera</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label for="start" class="form-label">Fecha Inicio</label>
+      <input type="date" id="start" formControlName="start" class="form-control">
+    </div>
+    <div class="col-md-2">
+      <label for="end" class="form-label">Fecha Fin</label>
+      <input type="date" id="end" formControlName="end" class="form-control">
+    </div>
+    <div class="col-md-3 form-check mt-4">
+      <input type="checkbox" id="includeIssatec" formControlName="includeIssatec" class="form-check-input">
+      <label for="includeIssatec" class="form-check-label">Incluir reuniones Issatec</label>
+    </div>
+    <div class="col-md-2 text-end">
+      <button type="submit" class="btn btn-primary w-100">Buscar</button>
+    </div>
+  </form>
+</div>
+
+<!-- Gráficos y Resumen -->
+<div class="row g-3">
+  <div class="col-lg-5">
+    <div class="section-card">
+      <h4 class="section-title">Casos por Cliente | Duración</h4>
+      <canvas id="chartLine">{{ chartLine }}</canvas>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="section-card">
+      <h4 class="section-title">Porcentaje de reuniones cumplidas</h4>
+      <canvas id="chartDoughnut">{{ chartDoughnut }}</canvas>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="section-card text-start">
+      <h4 class="section-title">Análisis Cliente / Proyecto</h4>
+      <div id="TableAnalysis">
+        <div class="spinner-container " [style.display]="spinnerTable ? 'block' : 'none'">
+          <div class="spinner"></div>
+          <p>Cargando análisis...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Analisis IA -->
+<div class="row g-3 section-card" id="WidgetsAnalysis">
+  <div class="spinner-container" [style.display]="spinnerWidgets ? 'block' : 'none'">
+    <div class="spinner"></div>
+    <p>Cargando análisis...</p>
+  </div>
+</div>
+
+<!-- Tabla General -->
+<div class="section-card">
+  <h4 class="section-title">Listado General</h4>
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered align-middle">
+      <thead>
         <tr>
-            <th>Asunto</th>
-            <th>Fecha y Hora</th>
-            <th>Participantes</th>
+          <th>Asunto</th>
+          <th>Cliente</th>
+          <th>Fecha</th>
+          <th>Hora Inicio</th>
+          <th>Hora Fin</th>
+          <th>Duración (min)</th>
+          <th>Estado</th>
+          <th>Participantes</th>
         </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
         @for (event of events; track $index) {
         <tr>
-            <td>{{ event.subject }}</td>
-            <td>{{ event.startDateTime | date:'dd/MM/yyyy HH:mm' }}</td>
-            <td>
-                <ul>
-                    @for (attendee of event.attendees; track $index) {
-                    <li>
-                        {{ attendee.name }} <small>({{ attendee.email }})</small> - <i>{{ attendee.type }}</i>
-                    </li>
-                    }
-                </ul>
-            </td>
+          <td>{{ event.Subject }}</td>
+          <td>{{ event.Customer }}</td>
+          <td>{{ event.StartDateTime | date : "dd/MM/yyyy" }}</td>
+          <td>{{ event.StartDateTime | date : "HH:mm" }}</td>
+          <td>{{ event.EndDateTime | date : "HH:mm" }}</td>
+          <td>{{ event.Duration }}</td>
+          <td>
+            <span [ngClass]="{
+              'badge bg-success': event.Estado === 'Realizada',
+              'badge bg-danger': event.Estado === 'Cancelada',
+              'badge bg-warning text-dark': event.Estado === 'Reprogramada',
+              'badge bg-info text-dark': event.Estado === 'Pendiente'
+            }">
+              {{ event.Estado }}
+            </span>
+          </td>
+          <td>
+            <ul>
+              @for (attendee of event.Participants; track $index) {
+              <li>
+                <strong>{{ attendee.Name }}</strong>
+                <small>({{ attendee.Email }})</small> -
+                <i>{{ attendee.Type }}</i>
+              </li>
+              }
+            </ul>
+          </td>
         </tr>
         }
-    </tbody>
-</table>
+      </tbody>
+    </table>
+  </div>
+</div>
