@@ -1,0 +1,177 @@
+.dashboard-shell {
+  display: grid;
+  gap: 1rem;
+}
+
+.dashboard-subtitle {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.kpi-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.8rem;
+  background: color-mix(in srgb, var(--surface-alt), transparent 10%);
+}
+
+.kpi-label {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kpi-value {
+  margin: 0.25rem 0 0;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 700;
+}
+
+.kpi-skeleton {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.kpi-skeleton-value {
+  height: 1.2rem;
+  width: 60%;
+}
+
+.kpi-warning {
+  border-color: color-mix(in srgb, var(--warning), var(--border) 60%);
+}
+
+.busiest-day {
+  color: var(--muted);
+}
+
+.busiest-day strong {
+  color: var(--text);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.chart-card,
+.overbooking-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  background: var(--surface-alt);
+  overflow: hidden;
+}
+
+.chart-title {
+  font-size: 0.95rem;
+  margin: 0 0 0.75rem;
+}
+
+.chart-host {
+  min-height: 280px;
+  padding-inline: 0.25rem;
+}
+
+.chart-host canvas {
+  display: block;
+  width: 100% !important;
+  max-width: 100%;
+}
+
+.chart-host-small {
+  min-height: 280px;
+  max-width: 420px;
+  margin-inline: auto;
+}
+
+.conflict-list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.conflict-item {
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--warning);
+  border-radius: 10px;
+  padding: 0.65rem 0.75rem;
+  background: var(--surface);
+}
+
+.conflict-item .text-muted,
+.conflict-item span.text-muted {
+  color: var(--muted) !important;
+}
+
+.conflict-head {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+
+.conflict-head span {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.overlap {
+  color: var(--warning);
+  font-weight: 600;
+}
+
+.ai-analysis-content {
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.ai-analysis-content :is(h1, h2, h3, h4, h5, h6) {
+  font-size: 0.98rem;
+  margin: 0.4rem 0 0.5rem;
+}
+
+.ai-analysis-content :is(ul, ol) {
+  margin-bottom: 0.5rem;
+  padding-left: 1.2rem;
+}
+
+.ai-analysis-content :is(p, li, span, strong, small) {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1200px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 991px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-card,
+  .overbooking-card {
+    padding: 0.85rem 0.9rem;
+  }
+
+  .chart-host {
+    padding-inline: 0.1rem;
+  }
+}

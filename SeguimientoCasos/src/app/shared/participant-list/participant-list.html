@@ -1,0 +1,20 @@
+<div class="participant-list-wrapper">
+  <ul class="participant-list">
+    @for (attendee of visibleParticipants; track attendee.Email) {
+      <li class="participant-item" [title]="attendee.Email">
+        <span class="participant-chip">{{ attendee.Name }}</span>
+        <small class="participant-email">{{ attendee.Email }}</small>
+      </li>
+    }
+  </ul>
+
+  @if (remainingCount > 0 && !isExpanded) {
+    <button type="button" class="participant-toggle" (click)="toggleExpanded()">
+      +{{ remainingCount }} mas
+    </button>
+  } @else if (participants.length > collapsedLimit && isExpanded) {
+    <button type="button" class="participant-toggle" (click)="toggleExpanded()">
+      Mostrar menos
+    </button>
+  }
+</div>

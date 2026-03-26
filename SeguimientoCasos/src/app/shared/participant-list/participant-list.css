@@ -1,0 +1,68 @@
+.participant-list-wrapper {
+    display: grid;
+    gap: 0.45rem;
+    max-width: 100%;
+}
+
+.participant-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.3rem;
+}
+
+.participant-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-width: 0;
+}
+
+.participant-chip {
+    display: inline-block;
+    max-width: 10.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-radius: 999px;
+    padding: 0.18rem 0.55rem;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--text);
+    background: color-mix(in srgb, var(--primary), transparent 88%);
+}
+
+.participant-email {
+    color: var(--muted);
+    font-size: 0.75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.participant-toggle {
+    justify-self: start;
+    border: 0;
+    background: transparent;
+    color: var(--primary);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0;
+    cursor: pointer;
+}
+
+.participant-toggle:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+    .participant-email {
+        display: none;
+    }
+
+    .participant-chip {
+        max-width: 8rem;
+        font-size: 0.72rem;
+    }
+}

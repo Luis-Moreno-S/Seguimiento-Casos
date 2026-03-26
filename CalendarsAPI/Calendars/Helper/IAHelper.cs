@@ -11,7 +11,7 @@ namespace Calendars.Helper
     {
         #region Variables
         private const string ApiUrl = "https://api.openai.com/v1/chat/completions";
-        private const string ApiKey = "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";
+        private const string ApiKey = "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";
         #endregion
 
         #region Metodos
@@ -87,7 +87,7 @@ namespace Calendars.Helper
 
                           Agrega los datos en este HTML y regrésalo con los datos mapeados:
 
-                          <table class='table table-striped table-bordered align-middle'>
+                          <table class='table table-hover align-middle'>
                             <tr>
                               <th>Cliente</th>
                               <th>Nº Reuniones</th>
@@ -119,15 +119,16 @@ namespace Calendars.Helper
                                 <strong>Duración máxima:</strong> min (reunion)
                               </p>
                             </div>
-                          </div>
-                          <div class='col-lg-2'>
+                          </div>                          
+                          <div class='col-lg-3'>
                             <div class='section-card text-start'>
-                              <h4 class='section-title' style='color: #1e3a8a'>Distribución</h4>
-                              <p>
-                                <strong>Reuniones cortas (≤ 30 min):</strong> <br>
-                                <strong>Reuniones medias (31 – 60 min):</strong> <br>
-                                <strong>Reuniones largas (> 60 min):</strong> <br>
-                              </p>
+                              <h4 class='section-title' style='color: #1e3a8a'>Conclusiones y Recomendaciones</h4>
+                              <ol>
+                                <li><b>Carga de reuniones:</b> </li>
+                                <li><b>Cliente con mayor interacción:</b> </li>
+                                <li><b>Cliente que ocupa más tiempo:</b> </li>
+                                <li><b>Oportunidad:</b> </li>
+                              </ol>
                             </div>
                           </div>
                           <div class='col-lg-3'>
@@ -139,15 +140,14 @@ namespace Calendars.Helper
                               </p>
                             </div>
                           </div>
-                          <div class='col-lg-3'>
+                          <div class='col-lg-2'>
                             <div class='section-card text-start'>
-                              <h4 class='section-title' style='color: #1e3a8a'>Conclusiones y Recomendaciones</h4>
-                              <ol>
-                                <li><b>Carga de reuniones:</b> </li>
-                                <li><b>Cliente con mayor interacción:</b> </li>
-                                <li><b>Cliente que ocupa más tiempo:</b> </li>
-                                <li><b>Oportunidad:</b> </li>
-                              </ol>
+                              <h4 class='section-title' style='color: #1e3a8a'>Distribución</h4>
+                              <p>
+                                <strong>Reuniones cortas (≤ 30 min):</strong> <br>
+                                <strong>Reuniones medias (31 – 60 min):</strong> <br>
+                                <strong>Reuniones largas (> 60 min):</strong> <br>
+                              </p>
                             </div>
                           </div>";
             return $"{prompt}\n\nDatos:\n{data}";

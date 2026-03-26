@@ -3,7 +3,11 @@
   "WorkspaceRootPath": "C:\\Users\\Lmoreno\\Documents\\GitHub\\Seguimiento-Casos\\CalendarsAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{BB223DF1-4A75-4780-8696-F23AC5E80F25}|Calendars\\Calendars.csproj|c:\\users\\lmoreno\\documents\\github\\seguimiento-casos\\calendarsapi\\calendars\\controllers\\valuescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{BB223DF1-4A75-4780-8696-F23AC5E80F25}|Calendars\\Calendars.csproj|c:\\users\\lmoreno\\documents\\github\\seguimiento-casos\\calendarsapi\\calendars\\helper\\iahelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BB223DF1-4A75-4780-8696-F23AC5E80F25}|Calendars\\Calendars.csproj|solutionrelative:calendars\\helper\\iahelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BB223DF1-4A75-4780-8696-F23AC5E80F25}|Calendars\\Calendars.csproj|C:\\Users\\Lmoreno\\Documents\\GitHub\\Seguimiento-Casos\\CalendarsAPI\\calendars\\controllers\\valuescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BB223DF1-4A75-4780-8696-F23AC5E80F25}|Calendars\\Calendars.csproj|solutionrelative:calendars\\controllers\\valuescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -31,15 +35,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "IAHelper.cs",
+              "DocumentMoniker": "C:\\Users\\Lmoreno\\Documents\\GitHub\\Seguimiento-Casos\\CalendarsAPI\\Calendars\\Helper\\IAHelper.cs",
+              "RelativeDocumentMoniker": "Calendars\\Helper\\IAHelper.cs",
+              "ToolTip": "C:\\Users\\Lmoreno\\Documents\\GitHub\\Seguimiento-Casos\\CalendarsAPI\\Calendars\\Helper\\IAHelper.cs",
+              "RelativeToolTip": "Calendars\\Helper\\IAHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAADLAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-14T16:49:25.747Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "ValuesController.cs",
               "DocumentMoniker": "C:\\Users\\Lmoreno\\Documents\\GitHub\\Seguimiento-Casos\\CalendarsAPI\\Calendars\\Controllers\\ValuesController.cs",
               "RelativeDocumentMoniker": "Calendars\\Controllers\\ValuesController.cs",
               "ToolTip": "C:\\Users\\Lmoreno\\Documents\\GitHub\\Seguimiento-Casos\\CalendarsAPI\\Calendars\\Controllers\\ValuesController.cs",
               "RelativeToolTip": "Calendars\\Controllers\\ValuesController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAADIAAAAAAAAAAAArwD0AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-30T17:34:53.222Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-30T17:34:53.222Z"
             }
           ]
         }

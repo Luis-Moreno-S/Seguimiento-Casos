@@ -1,0 +1,196 @@
+<div class="section-card dashboard-shell">
+  <div class="dashboard-header">
+    <h3 class="section-title mb-1">Analytics Dashboard</h3>
+    <p class="dashboard-subtitle mb-0">Patrones de carga, duración, participación y conflictos de agenda.</p>
+  </div>
+
+  <div class="kpi-grid">
+    <article class="kpi-card">
+      @if (loading) {
+        <div class="kpi-skeleton">
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line kpi-skeleton-value"></div>
+        </div>
+      } @else {
+        <p class="kpi-label">Total reuniones</p>
+        <p class="kpi-value">{{ kpi.totalMeetings }}</p>
+      }
+    </article>
+    <article class="kpi-card">
+      @if (loading) {
+        <div class="kpi-skeleton">
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line kpi-skeleton-value"></div>
+        </div>
+      } @else {
+        <p class="kpi-label">Duración promedio</p>
+        <p class="kpi-value">{{ kpi.averageDuration }} min</p>
+      }
+    </article>
+    <article class="kpi-card">
+      @if (loading) {
+        <div class="kpi-skeleton">
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line kpi-skeleton-value"></div>
+        </div>
+      } @else {
+        <p class="kpi-label">Participaciones</p>
+        <p class="kpi-value">{{ kpi.totalParticipants }}</p>
+      }
+    </article>
+    <article class="kpi-card kpi-warning">
+      @if (loading) {
+        <div class="kpi-skeleton">
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line kpi-skeleton-value"></div>
+        </div>
+      } @else {
+        <p class="kpi-label">Overbookings</p>
+        <p class="kpi-value">{{ kpi.overbookings }}</p>
+      }
+    </article>
+  </div>
+
+  <p class="busiest-day mb-0">
+    @if (loading) {
+      <span class="text-muted">Cargando...</span>
+    } @else {
+      <span>Día más cargado:</span>
+      <strong>{{ kpi.busiestDayLabel }}</strong>
+    }
+  </p>
+
+  @if (loading) {
+    <div class="skeleton-list mt-3">
+      <div class="skeleton skeleton-line"></div>
+      <div class="skeleton skeleton-line"></div>
+      <div class="skeleton skeleton-line short"></div>
+    </div>
+  } @else {
+    <div class="dashboard-grid">
+      <section class="chart-card">
+        <h4 class="chart-title">Casos por Cliente | Duración</h4>
+        <div class="chart-host">
+          <canvas
+            baseChart
+            [type]="customerMixChartType"
+            [data]="customerMixChartData"
+            [options]="chartOptions">
+          </canvas>
+        </div>
+      </section>
+
+      <section class="chart-card">
+        <h4 class="chart-title">Cumplimiento de reuniones</h4>
+        <div class="chart-host chart-host-small">
+          <canvas
+            baseChart
+            [type]="complianceChartType"
+            [data]="complianceChartData"
+            [options]="doughnutOptions">
+          </canvas>
+        </div>
+      </section>
+
+      <section class="chart-card">
+        <h4 class="chart-title">Reuniones por día</h4>
+        <div class="chart-host">
+          <canvas
+            baseChart
+            [type]="lineChartType"
+            [data]="lineChartData"
+            [options]="chartOptions">
+          </canvas>
+        </div>
+      </section>
+
+      <section class="chart-card">
+        <h4 class="chart-title">Reuniones por hora (08:00 - 18:00)</h4>
+        <div class="chart-host">
+          <canvas
+            baseChart
+            [type]="hoursChartType"
+            [data]="hoursChartData"
+            [options]="chartOptions">
+          </canvas>
+        </div>
+      </section>
+
+      <section class="chart-card">
+        <h4 class="chart-title">Histograma de duración</h4>
+        <div class="chart-host">
+          <canvas
+            baseChart
+            [type]="durationChartType"
+            [data]="durationChartData"
+            [options]="chartOptions">
+          </canvas>
+        </div>
+      </section>
+
+      <section class="chart-card">
+        <h4 class="chart-title">Top participantes</h4>
+        <div class="chart-host">
+          <canvas
+            baseChart
+            [type]="topParticipantsChartType"
+            [data]="topParticipantsChartData"
+            [options]="horizontalBarOptions">
+          </canvas>
+        </div>
+      </section>
+    </div>
+
+    <section class="overbooking-card">
+      @if (aiAnalysisLoading) {
+        <div class="skeleton-list">
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line short"></div>
+        </div>
+      } @else if (aiAnalysisHtml) {
+        <div class="ai-analysis-content" [innerHTML]="aiAnalysisHtml"></div>
+      } @else {
+        <p class="text-muted mb-0">Sin analisis IA para los filtros actuales.</p>
+      }
+    </section>
+
+    <section class="overbooking-card">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+        <h4 class="chart-title mb-0">Overbooking detectado</h4>
+        <span class="badge status-warning">{{ overbookingConflicts.length }} conflictos</span>
+      </div>
+
+      @if (overbookingConflicts.length === 0) {
+        <p class="text-muted mb-0">Sin conflictos de agenda para los filtros actuales.</p>
+      } @else {
+        <div class="conflict-list">
+          @for (conflict of visibleConflicts; track $index) {
+            <article class="conflict-item">
+              <div class="conflict-head">
+                <strong>{{ conflict.participantName }}</strong>
+                <span>{{ conflict.participantEmail }}</span>
+              </div>
+              <p class="mb-1">
+                <span class="text-muted">A:</span>
+                {{ conflict.meetingA }}
+                <span class="text-muted">({{ formatConflictDate(conflict.startA) }} - {{ formatConflictDate(conflict.endA) }})</span>
+              </p>
+              <p class="mb-1">
+                <span class="text-muted">B:</span>
+                {{ conflict.meetingB }}
+                <span class="text-muted">({{ formatConflictDate(conflict.startB) }} - {{ formatConflictDate(conflict.endB) }})</span>
+              </p>
+              <small class="overlap">Solapamiento: {{ conflict.overlapMinutes }} min</small>
+            </article>
+          }
+        </div>
+        @if (hasMoreConflicts) {
+          <button type="button" class="btn btn-sm btn-theme mt-2" (click)="showMoreConflicts()">
+            Ver más conflictos
+          </button>
+        }
+      }
+    </section>
+  }
+</div>

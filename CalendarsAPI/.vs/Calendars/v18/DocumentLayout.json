@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\Lmoreno\\Documents\\GitHub\\Seguimiento-Casos\\CalendarsAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{BB223DF1-4A75-4780-8696-F23AC5E80F25}|Calendars\\Calendars.csproj|c:\\users\\lmoreno\\documents\\github\\seguimiento-casos\\calendarsapi\\calendars\\helper\\iahelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BB223DF1-4A75-4780-8696-F23AC5E80F25}|Calendars\\Calendars.csproj|solutionrelative:calendars\\helper\\iahelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BB223DF1-4A75-4780-8696-F23AC5E80F25}|Calendars\\Calendars.csproj|c:\\users\\lmoreno\\documents\\github\\seguimiento-casos\\calendarsapi\\calendars\\controllers\\valuescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BB223DF1-4A75-4780-8696-F23AC5E80F25}|Calendars\\Calendars.csproj|solutionrelative:calendars\\controllers\\valuescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BB223DF1-4A75-4780-8696-F23AC5E80F25}|Calendars\\Calendars.csproj|C:\\Users\\Lmoreno\\Documents\\GitHub\\Seguimiento-Casos\\CalendarsAPI\\calendars\\controllers\\valuescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BB223DF1-4A75-4780-8696-F23AC5E80F25}|Calendars\\Calendars.csproj|solutionrelative:calendars\\controllers\\valuescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BB223DF1-4A75-4780-8696-F23AC5E80F25}|Calendars\\Calendars.csproj|C:\\Users\\Lmoreno\\Documents\\GitHub\\Seguimiento-Casos\\CalendarsAPI\\calendars\\helper\\iahelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BB223DF1-4A75-4780-8696-F23AC5E80F25}|Calendars\\Calendars.csproj|solutionrelative:calendars\\helper\\iahelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,8 +18,12 @@
       "DocumentGroups": [
         {
           "DockedWidth": 181,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 5,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
@@ -34,28 +38,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "IAHelper.cs",
               "DocumentMoniker": "C:\\Users\\Lmoreno\\Documents\\GitHub\\Seguimiento-Casos\\CalendarsAPI\\Calendars\\Helper\\IAHelper.cs",
               "RelativeDocumentMoniker": "Calendars\\Helper\\IAHelper.cs",
               "ToolTip": "C:\\Users\\Lmoreno\\Documents\\GitHub\\Seguimiento-Casos\\CalendarsAPI\\Calendars\\Helper\\IAHelper.cs",
               "RelativeToolTip": "Calendars\\Helper\\IAHelper.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAADLAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAAAAAAAAAAAgwE8AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-14T16:49:25.747Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-26T16:11:43.1Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "ValuesController.cs",
               "DocumentMoniker": "C:\\Users\\Lmoreno\\Documents\\GitHub\\Seguimiento-Casos\\CalendarsAPI\\Calendars\\Controllers\\ValuesController.cs",
               "RelativeDocumentMoniker": "Calendars\\Controllers\\ValuesController.cs",
               "ToolTip": "C:\\Users\\Lmoreno\\Documents\\GitHub\\Seguimiento-Casos\\CalendarsAPI\\Calendars\\Controllers\\ValuesController.cs",
               "RelativeToolTip": "Calendars\\Controllers\\ValuesController.cs",
-              "ViewState": "AgIAADIAAAAAAAAAAAArwD0AAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAADMAAAAAAAAAAAAQwDkAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-30T17:34:53.222Z"
+              "WhenOpened": "2026-03-26T16:11:43.636Z",
+              "EditorCaption": ""
             }
           ]
         }

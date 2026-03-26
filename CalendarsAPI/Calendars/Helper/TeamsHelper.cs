@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Calendars.Helper
 {
@@ -18,16 +19,43 @@ namespace Calendars.Helper
         {
             try
             {
-                string url = $"https://graph.microsoft.com/v1.0/users/{email}/calendarView?startDateTime={StartDate:yyyy-MM-ddTHH:mm:ss}&endDateTime={EndDate:yyyy-MM-ddTHH:mm:ss}&$select=subject,start,end,attendees,isCancelled,createdDateTime,lastModifiedDateTime";
-                do
+                var token = await GetToken();
+                var url = $"https://graph.microsoft.com/v1.0/users/{email}/calendarView?startDateTime={StartDate:o}&endDateTime={EndDate:o}&$select=subject,start,end,attendees,isCancelled,createdDateTime,lastModifiedDateTime";
+                var allEvents = new List<JsonElement>();
+
+                while (!string.IsNullOrWhiteSpace(url))
                 {
                     var request = new HttpRequestMessage(HttpMethod.Get, url);
-                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await GetToken());
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     request.Headers.Add("Prefer", "outlook.timezone=\"SA Pacific Standard Time\"");
                     var response = await httpClient.SendAsync(request);
                     response.EnsureSuccessStatusCode();
-                    return await response.Content.ReadAsStringAsync();
-                } while (!string.IsNullOrEmpty(url));
+
+                    var json = await response.Content.ReadAsStringAsync();
+                    using (var doc = JsonDocument.Parse(json))
+                    {
+                        var root = doc.RootElement;
+                        if (root.TryGetProperty("value", out var value))
+                        {
+                            allEvents.AddRange(value.EnumerateArray().Select(item => item.Clone()));
+                        }
+
+                        if (root.TryGetProperty("@odata.nextLink", out var nextLinkElement))
+                        {
+                            url = nextLinkElement.GetString();
+                        }
+                        else
+                        {
+                            url = null;
+                        }
+                    }
+                }
+
+                var result = JsonSerializer.Serialize(new
+                {
+                    value = allEvents
+                });
+                return result;
             }
             catch (Exception ex)
             {

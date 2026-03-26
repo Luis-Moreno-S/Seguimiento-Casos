@@ -1,121 +1,170 @@
-<!-- Formulario de filtros -->
-<div class="section-card">
+<div class="section-card listado-card">
   <form [formGroup]="dataForm" (ngSubmit)="getData()" class="row g-3 align-items-end">
-    <div class="col-md-3">
-      <label for="userSelect" class="form-label">Usuario</label>
-      <select id="userSelect" formControlName="userEmail" class="form-select">
-        <option value="camila.martinez@issatec.com">Camila Martinez</option>
-        <option value="daniel.parra@issatec.com">Daniel Parra</option>
-        <option value="geoffrey.soto@issatec.com">Geoffrey Soto</option>
-        <option value="gustavo.causil@issatec.com">Gustavo Causil</option>
-        <option value="luis.moreno@issatec.com">Luis Moreno</option>
-        <option value="samuel.melo@issatec.com">Samuel Melo</option>
-        <option value="paola.vera@issatec.com">Paola Vera</option>
+    <div class="col-12 col-md-6 col-xl-3">
+      <label for="departmentSelect" class="form-label">Departamento</label>
+      <select id="departmentSelect" formControlName="department" class="form-select">
+        <option value="">Selecciona un departamento</option>
+        @for (department of departments; track department) {
+          <option [value]="department">{{ department }}</option>
+        }
       </select>
     </div>
-    <div class="col-md-2">
+    <div class="col-12 col-md-6 col-xl-3">
+      <label for="userSelect" class="form-label">Usuario</label>
+      <select id="userSelect" formControlName="userEmail" class="form-select">
+        <option value="">Selecciona un usuario</option>
+        @for (user of usersForSelectedDepartment; track user.email) {
+          <option [value]="user.email">{{ user.displayName }}</option>
+        }
+      </select>
+    </div>
+    <div class="col-6 col-md-3 col-xl-1">
       <label for="start" class="form-label">Fecha Inicio</label>
-      <input type="date" id="start" formControlName="start" class="form-control">
+      <input type="date" id="start" formControlName="start" class="form-control" [class.is-invalid]="dataForm.get('start')?.invalid && dataForm.get('start')?.touched">
     </div>
-    <div class="col-md-2">
+    <div class="col-6 col-md-3 col-xl-1">
       <label for="end" class="form-label">Fecha Fin</label>
-      <input type="date" id="end" formControlName="end" class="form-control">
+      <input type="date" id="end" formControlName="end" class="form-control" [class.is-invalid]="dataForm.get('end')?.invalid && dataForm.get('end')?.touched">
     </div>
-    <div class="col-md-3 form-check mt-4">
-      <input type="checkbox" id="includeIssatec" formControlName="includeIssatec" class="form-check-input">
-      <label for="includeIssatec" class="form-check-label">Incluir reuniones Issatec</label>
-    </div>
-    <div class="col-md-2 text-end">
-      <button type="submit" class="btn btn-primary w-100">Buscar</button>
-    </div>
-  </form>
-</div>
-
-<!-- Gráficos y Resumen -->
-<div class="row g-3">
-  <div class="col-lg-5">
-    <div class="section-card">
-      <h4 class="section-title">Casos por Cliente | Duración</h4>
-      <canvas id="chartLine">{{ chartLine }}</canvas>
-    </div>
-  </div>
-  <div class="col-lg-3">
-    <div class="section-card">
-      <h4 class="section-title">Porcentaje de reuniones cumplidas</h4>
-      <canvas id="chartDoughnut">{{ chartDoughnut }}</canvas>
-    </div>
-  </div>
-  <div class="col-lg-4">
-    <div class="section-card text-start">
-      <h4 class="section-title">Análisis Cliente / Proyecto</h4>
-      <div id="TableAnalysis">
-        <div class="spinner-container " [style.display]="spinnerTable ? 'block' : 'none'">
-          <div class="spinner"></div>
-          <p>Cargando análisis...</p>
-        </div>
+    <div class="col-12 col-md-6 col-xl-2">
+      <div class="form-check mt-md-4 pt-md-2">
+        <input type="checkbox" id="includeIssatec" formControlName="includeIssatec" class="form-check-input">
+        <label for="includeIssatec" class="form-check-label">Incluir reuniones Issatec</label>
       </div>
     </div>
+    <div class="col-12 col-md-6 col-xl-2">
+      <button type="submit" class="btn btn-primary w-100" [disabled]="loadingEvents">
+        {{ loadingEvents ? 'Cargando...' : 'Buscar' }}
+      </button>
+    </div>
+  </form>
+
+  @if (feedbackMessage) {
+    <p class="feedback-message mt-3" [ngClass]="feedbackType === 'success' ? 'feedback-success' : 'feedback-error'">
+      {{ feedbackMessage }}
+      @if (feedbackType === 'success') {
+        <span class="feedback-divider"> | </span>
+        <span class="feedback-count-success">Realizadas: {{ reunionesRealizadas }}</span>
+        <span class="feedback-divider"> - </span>
+        <span class="feedback-count-error">Canceladas: {{ reunionesCanceladas }}</span>
+      }
+    </p>
+  }
+</div>
+
+<app-dashboard
+  [events]="events"
+  [loading]="loadingEvents"
+  [aiAnalysisHtml]="aiAnalysisHtml"
+  [aiAnalysisLoading]="spinnerTable">
+</app-dashboard>
+
+<div class="section-card" id="WidgetsAnalysis">
+  <div class="ai-widgets-header">
+    <h4 class="section-title mb-1">Análisis IA con ChatGPT</h4>
+    <p class="ai-widgets-subtitle mb-0">
+      @if (spinnerWidgets) {
+        Generando insights, por favor espera...
+      } @else if (!widgetsAnalysisLoaded) {
+        Aquí aparecerá el análisis IA cuando esté listo.
+      } @else {
+        Análisis generado.
+      }
+    </p>
+  </div>
+
+  <div class="widgets-grid" id="WidgetsAnalysisGrid">
+    @if (spinnerWidgets) {
+      <div class="skeleton-list">
+        <div class="skeleton skeleton-widget"></div>
+        <div class="skeleton skeleton-widget"></div>
+        <div class="skeleton skeleton-widget"></div>
+      </div>
+    }
+    <div id="WidgetsAnalysisContent"></div>
   </div>
 </div>
 
-<!-- Analisis IA -->
-<div class="row g-3 section-card" id="WidgetsAnalysis">
-  <div class="spinner-container" [style.display]="spinnerWidgets ? 'block' : 'none'">
-    <div class="spinner"></div>
-    <p>Cargando análisis...</p>
-  </div>
-</div>
-
-<!-- Tabla General -->
 <div class="section-card">
-  <h4 class="section-title">Listado General</h4>
+  <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+      <h4 class="section-title mb-0">Listado General</h4>
+      <small class="table-count">{{ filteredEvents.length }} registros</small>
+    </div>
+  </div>
+  <div class="table-tools">
+    <input
+      type="search"
+      class="form-control"
+      placeholder="Buscar en listado general..."
+      [(ngModel)]="searchTerm"
+      [ngModelOptions]="{ standalone: true }"
+      (ngModelChange)="currentPage = 1"
+    />
+  </div>
   <div class="table-responsive">
-    <table class="table table-striped table-bordered align-middle">
+    <table class="table table-hover align-middle">
       <thead>
         <tr>
-          <th>Asunto</th>
-          <th>Cliente</th>
-          <th>Fecha</th>
-          <th>Hora Inicio</th>
-          <th>Hora Fin</th>
-          <th>Duración (min)</th>
-          <th>Estado</th>
-          <th>Participantes</th>
+          <th class="sortable-col" (click)="setSort('Subject')">Asunto {{ getSortIndicator('Subject') }}</th>
+          <th class="sortable-col" (click)="setSort('Customer')">Cliente {{ getSortIndicator('Customer') }}</th>
+          <th class="sortable-col" (click)="setSort('StartDate')">Fecha {{ getSortIndicator('StartDate') }}</th>
+          <th class="sortable-col" (click)="setSort('StartTime')">Hora Inicio {{ getSortIndicator('StartTime') }}</th>
+          <th class="sortable-col" (click)="setSort('EndTime')">Hora Fin {{ getSortIndicator('EndTime') }}</th>
+          <th class="sortable-col" (click)="setSort('Duration')">Duración (min) {{ getSortIndicator('Duration') }}</th>
+          <th class="sortable-col" (click)="setSort('Estado')">Estado {{ getSortIndicator('Estado') }}</th>
+          <th class="sortable-col" (click)="setSort('Participants')">Participantes {{ getSortIndicator('Participants') }}</th>
         </tr>
       </thead>
       <tbody>
-        @for (event of events; track $index) {
-        <tr>
-          <td>{{ event.Subject }}</td>
-          <td>{{ event.Customer }}</td>
-          <td>{{ event.StartDateTime | date : "dd/MM/yyyy" }}</td>
-          <td>{{ event.StartDateTime | date : "HH:mm" }}</td>
-          <td>{{ event.EndDateTime | date : "HH:mm" }}</td>
-          <td>{{ event.Duration }}</td>
-          <td>
-            <span [ngClass]="{
-              'badge bg-success': event.Estado === 'Realizada',
-              'badge bg-danger': event.Estado === 'Cancelada',
-              'badge bg-warning text-dark': event.Estado === 'Reprogramada',
-              'badge bg-info text-dark': event.Estado === 'Pendiente'
-            }">
-              {{ event.Estado }}
-            </span>
-          </td>
-          <td>
-            <ul>
-              @for (attendee of event.Participants; track $index) {
-              <li>
-                <strong>{{ attendee.Name }}</strong>
-                <small>({{ attendee.Email }})</small> -
-                <i>{{ attendee.Type }}</i>
-              </li>
-              }
-            </ul>
-          </td>
-        </tr>
+        @if (loadingEvents) {
+          <tr>
+            <td colspan="8">
+              <div class="skeleton-list py-2">
+                <div class="skeleton skeleton-line"></div>
+                <div class="skeleton skeleton-line"></div>
+                <div class="skeleton skeleton-line"></div>
+              </div>
+            </td>
+          </tr>
+        } @else if (filteredEvents.length === 0) {
+          <tr>
+            <td colspan="8" class="text-center py-4 text-muted">No se encontraron resultados para los filtros seleccionados.</td>
+          </tr>
+        } @else {
+          @for (event of filteredEvents | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }; track $index) {
+            <tr>
+              <td>{{ event.Subject }}</td>
+              <td>{{ event.Customer || 'Sin cliente' }}</td>
+              <td>{{ event.StartDateTime | date : "dd/MM/yyyy" }}</td>
+              <td>{{ event.StartDateTime | date : "HH:mm" }}</td>
+              <td>{{ event.EndDateTime | date : "HH:mm" }}</td>
+              <td>{{ event.Duration }}</td>
+              <td>
+                <span [ngClass]="{
+                  'badge status-success': event.Estado === 'Realizada',
+                  'badge status-error': event.Estado === 'Cancelada',
+                  'badge status-warning': event.Estado === 'Reprogramada',
+                  'badge status-info': event.Estado === 'Pendiente'
+                }">
+                  {{ event.Estado }}
+                </span>
+              </td>
+              <td>
+                <app-participant-list [participants]="event.Participants"></app-participant-list>
+              </td>
+            </tr>
+          }
         }
       </tbody>
     </table>
+  </div>
+  <div class="table-pagination">
+    <pagination-controls
+      previousLabel="Anterior"
+      nextLabel="Siguiente"
+      [responsive]="true"
+      (pageChange)="currentPage = $event">
+    </pagination-controls>
   </div>
 </div>
